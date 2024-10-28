@@ -1,2 +1,4 @@
 /PostgreSQL
 /uploads
+/Nuxt3/public/*
+!/Nuxt3/public/favicon.ico

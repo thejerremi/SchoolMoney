@@ -23,7 +23,7 @@ public class _Class {
     private Integer id;
 
     private String className;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
     private List<Child> children;
 

@@ -63,7 +63,7 @@ public class TransactionService {
                 .type(DEPOSIT)
                 .amount(request.getAmount())
                 .user(user)
-                .createdAt(LocalDateTime.now(ZoneId.of("UTC+2")))
+                .createdAt(LocalDateTime.now())
                 .description("Wpłacono " + request.getAmount() + " złotych.")
                 .build();
         userService.addBalance(user, request.getAmount());
@@ -75,7 +75,7 @@ public class TransactionService {
                 .type(ATM_DEPOSIT)
                 .amount(request.getAmount())
                 .user(user)
-                .createdAt(LocalDateTime.now(ZoneId.of("UTC+2")))
+                .createdAt(LocalDateTime.now())
                 .description("Wpłacono " + request.getAmount() + " złotych.")
                 .build();
         userService.addBalance(user, request.getAmount());
@@ -101,7 +101,7 @@ public class TransactionService {
                 .type(TransactionType.TRANSFER)
                 .amount(request.getAmount())
                 .user(user)
-                .createdAt(LocalDateTime.now(ZoneId.of("UTC+2")))
+                .createdAt(LocalDateTime.now())
                 .recipient(recipientDescription)
                 .description("Przelano " + request.getAmount() + " złotych na konto: " + request.getAccountNumberDest())
                 .build();
@@ -111,7 +111,7 @@ public class TransactionService {
                     .type(TransactionType.USER_TRANSFER)
                     .amount(request.getAmount())
                     .user(userDestination.get())
-                    .createdAt(LocalDateTime.now(ZoneId.of("UTC+2")))
+                    .createdAt(LocalDateTime.now())
                     .description("Otrzymano " + request.getAmount() + " złotych od "
                             + user.getFirstname() + " " + user.getLastname() + ", numer konta:" + user.getAccountNumber())
                     .build();

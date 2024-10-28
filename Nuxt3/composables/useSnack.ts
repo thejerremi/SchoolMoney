@@ -1,29 +1,28 @@
-
 export const useSnack = () => {
   const snackbar = useSnackbar();
 
   function snackbarSuccess(text: string) {
     snackbar.add({
-      type: 'success',
-      text: text
+      type: "success",
+      text: text,
     });
   }
   function snackbarError(text: string, duration?: number) {
     snackbar.add({
-      type: 'error',
+      type: "error",
       text: text,
-      duration: duration
+      duration: duration,
     });
   }
-  function snackbarInfo(text: string, duration: number){
+  function snackbarInfo(text: string, duration: number) {
     snackbar.add({
-      type: 'info',
+      type: "info",
       text: text,
-      duration: duration
+      duration: duration,
     });
   }
-  function clearSnackbars(){
+  function clearSnackbars() {
     snackbar.clear();
   }
   return { snackbarSuccess, snackbarError, snackbarInfo, clearSnackbars };
-}
+};

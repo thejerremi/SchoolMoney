@@ -9,31 +9,36 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '~/stores/AuthStore';
-import { useTransactionStore } from '~/stores/TransactionStore';
-import { useSnack } from '@/composables/useSnack';
-import { useDate } from 'vuetify'
+import { useAuthStore } from "~/stores/AuthStore";
+import { useTransactionStore } from "~/stores/TransactionStore";
+import { useSnack } from "@/composables/useSnack";
+import { useDate } from "vuetify";
 
 const { snackbarSuccess, snackbarError } = useSnack();
 const authStore = useAuthStore();
 const transactionStore = useTransactionStore();
-const date = useDate()
+const date = useDate();
 
 onMounted(async () => {
-  if(localStorage.getItem('token') !== null) {
-    await authStore.getUserByToken()
-    .then(() => {
-      snackbarSuccess('Zalogowano pomyślnie.')
-    }).catch(() => {
-      snackbarError('Twoja sesja wygasła. Zaloguj się ponownie.')
-    })
-  }
-})
-watch(() => authStore.user, (user) => {
-  if (user === null) {
-    navigateTo('/');
+  if (localStorage.getItem("token") !== null) {
+    await authStore
+      .getUserByToken()
+      .then(() => {
+        snackbarSuccess("Zalogowano pomyślnie.");
+      })
+      .catch(() => {
+        snackbarError("Twoja sesja wygasła. Zaloguj się ponownie.");
+      });
   }
 });
+watch(
+  () => authStore.user,
+  (user) => {
+    if (user === null) {
+      navigateTo("/");
+    }
+  }
+);
 
 watch(
   () => transactionStore.lastFiveTransactions,
@@ -44,9 +49,9 @@ watch(
 
       // Dodaj minus dla wypłaty, przelewu, wpłaty na zbiórkę i korekcji balansu
       if (
-        transaction.type === transactionTypes.WITHDRAW || 
-        transaction.type === transactionTypes.TRANSFER || 
-        transaction.type === transactionTypes.FUNDRAISE_DEPOSIT || 
+        transaction.type === transactionTypes.WITHDRAW ||
+        transaction.type === transactionTypes.TRANSFER ||
+        transaction.type === transactionTypes.FUNDRAISE_DEPOSIT ||
         transaction.type === transactionTypes.FUNDRAISE_WITHDRAW_CORRECTION
       ) {
         transaction.amount = `-${transaction.amount} PLN`;
@@ -55,7 +60,10 @@ watch(
       }
 
       // Formatowanie daty
-      transaction.createdAt = date.format(transaction.createdAt, 'fullDateTime24h');
+      transaction.createdAt = date.format(
+        transaction.createdAt,
+        "fullDateTime24h"
+      );
     });
   }
 );
@@ -73,9 +81,8 @@ const transactionTypes = {
   FUNDRAISE_DEPOSIT: "Wpłata na zbiórkę",
   FUNDRAISE_WITHDRAW: "Wypłata ze zbiórki",
   FUNDRAISE_REFUND: "Zwrot z anulowanej zbiórki",
-  FUNDRAISE_WITHDRAW_CORRECTION: "Korekcja balansu z anulowanej zbiórki"
+  FUNDRAISE_WITHDRAW_CORRECTION: "Korekcja balansu z anulowanej zbiórki",
 };
-
 </script>
 
-<style ></style>
+<style></style>

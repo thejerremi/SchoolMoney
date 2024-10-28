@@ -1,6 +1,7 @@
 package com.paw.schoolMoney.child;
 
 import com.paw.schoolMoney._class._Class;
+import com.paw.schoolMoney.transaction.Transaction;
 import com.paw.schoolMoney.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -31,5 +33,13 @@ public class Child {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
     private _Class _class;
+    @OneToMany(mappedBy = "children")
+    private List<Transaction> transactions;
+    @PreRemove
+    private void preRemove() {
+        for (Transaction transaction : transactions) {
+            transaction.setChildren(null);
+        }
+    }
 
 }

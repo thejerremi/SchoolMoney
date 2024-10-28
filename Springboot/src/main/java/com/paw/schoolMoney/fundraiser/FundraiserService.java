@@ -83,8 +83,12 @@ public class FundraiserService {
 
         // Sprawdzenie statusu i umożliwienie edycji tylko odpowiednich pól
         if (existingFundraiser.getStatus() == FundraiserStatus.PLANNED) {
-            if(startDate != null)
+            if(startDate != null){
                 existingFundraiser.setStartDate(startDate);
+                if(startDate.equals(LocalDate.now())){
+                    existingFundraiser.setStatus(FundraiserStatus.OPEN);
+                }
+            }
             if(endDate != null)
                 existingFundraiser.setEndDate(endDate);
         } else if (existingFundraiser.getStatus() == FundraiserStatus.OPEN) {

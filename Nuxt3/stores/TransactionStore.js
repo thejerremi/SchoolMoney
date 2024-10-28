@@ -1,16 +1,16 @@
-import { defineStore } from 'pinia'
-import transactionService from '@/services/transactionService';
-import { useAuthStore } from './AuthStore';
+import { defineStore } from "pinia";
+import transactionService from "@/services/transactionService";
+import { useAuthStore } from "./AuthStore";
 
-export const useTransactionStore = defineStore('transactionStore',{
-  state: () => ({ 
+export const useTransactionStore = defineStore("transactionStore", {
+  state: () => ({
     lastFiveTransactions: [],
     paginatedTransactions: [],
     totalPages: 0,
     currentPage: 0,
   }),
   actions: {
-    reset(){
+    reset() {
       this.lastFiveTransactions = [];
       this.paginatedTransactions = [];
       this.totalPages = 0;
@@ -19,6 +19,7 @@ export const useTransactionStore = defineStore('transactionStore',{
     async fetchLastTransactions() {
       const response = await transactionService.fetchLastTransactions();
       this.lastFiveTransactions = response.data;
+      console.log(response.data);
     },
     async fetchPaginatedTransactions(page) {
       if (this.paginatedTransactions[page]) {
@@ -26,17 +27,19 @@ export const useTransactionStore = defineStore('transactionStore',{
       }
 
       try {
-        const response = await transactionService.fetchPaginatedTransactions(page);
+        const response = await transactionService.fetchPaginatedTransactions(
+          page
+        );
         const data = response.data;
-        
+
         // Store paginated transactions
         this.paginatedTransactions[page] = data.content;
-        
+
         // Update pagination metadata
         this.totalPages = data.totalPages;
         this.currentPage = page;
       } catch (error) {
-        console.error('Failed to fetch paginated transactions:', error);
+        console.error("Failed to fetch paginated transactions:", error);
       }
     },
     async atmDeposit(amount) {
@@ -45,9 +48,9 @@ export const useTransactionStore = defineStore('transactionStore',{
         const authStore = useAuthStore();
         authStore.user.balance += amount;
         this.fetchLastTransactions();
-      }catch (error) {
+      } catch (error) {
         throw error;
-      }      
+      }
     },
     async sendTransfer(transferDetails) {
       try {
@@ -55,10 +58,10 @@ export const useTransactionStore = defineStore('transactionStore',{
         const authStore = useAuthStore();
         authStore.user.balance -= transferDetails.amount;
         this.fetchLastTransactions();
-        navigateTo('/user')
-      }catch (error) {
+        navigateTo("/user");
+      } catch (error) {
         throw error;
-      }      
+      }
     },
-  }
-})
+  },
+});
